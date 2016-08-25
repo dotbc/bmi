@@ -1,0 +1,32 @@
+{
+  "name": "bmi",
+  "displayName": "BMI",
+  "version": "0.0.0",
+  "description": "example BMI plugin for dotBC",
+  "publisher": "cardstack",
+  "main": "index.js",
+  "capabilities": {
+    "search": {
+      "name": "BMI",
+      "description": "Look up artists on BMI.",
+      "imageUrl": "public/images/icon-bmi.png",
+      "searchImageUrl": "public/images/icon-bmi-search.png",
+      "supportedSearchTypes": [
+        "artist",
+        "work"
+      ],
+      "commands": [
+        "search",
+        "getDetails"
+      ]
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cardstack-extension-manager": "git+ssh://git@github.com/mateodelnorte/cardstack-extension-manager.git",
+    "debug": "^2.2.0",
+    "lodash": "^4.15.0",
+    "superagent": "^2.2.0"
+  }
+}

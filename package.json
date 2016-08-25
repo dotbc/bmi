@@ -3,7 +3,7 @@
   "displayName": "BMI",
   "version": "0.0.0",
   "description": "example BMI plugin for dotBC",
-  "publisher": "cardstack",
+  "publisher": "dotBC",
   "main": "index.js",
   "capabilities": {
     "search": {
@@ -22,7 +22,7 @@
     }
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cardstack-extension-manager": "git+ssh://git@github.com/mateodelnorte/cardstack-extension-manager.git",
     "debug": "^2.2.0",

@@ -1,9 +1,8 @@
+const bmi = require('./lib/bmi');
 const debug = require('debug')('bmi-plugin');
 const getTopMedia = require('./lib/getTopMedia');
 const request = require('superagent');
 const _ = require('lodash');
-
-const BASE_URI = 'https://scraper.seeddevs.com/bmi-';
 
 var artistCache = {};
 
@@ -14,28 +13,27 @@ class BmiPlugin {
     debug(`performing ${entityType} search w query ${query}`);
 
     if (entityType === 'artist') {
-      return request.get(`${BASE_URI}artist?name=${encodeURIComponent(query)}`, (err, res) => {
+
+      return bmi.artist(query, (err, results) => {
         if (err) return cb(err);
 
-        let results = res.body;
-
-        // Cherry-pick out just the artists
         var artists;
         if (results.singleArtist.name !== "") {
           artists = [results.singleArtist];
         } else {
-          artists = results.artists;
+          artists = results.artist || results.artists;
         }
         _.each(artists, function(item) {
           item.humanhref = item.href = item.link;
         });
+
         debug(`found ${artists.length} artists`);
+
         return cb(null, artists);
       });
     } else if (entityType === 'work') {
-      return request.get(`${BASE_URI}title?name=${encodeURIComponent(query)}`, (err, res) => {
-
-        let results = res.body;
+      return bmi.title(query, (err, results) => {
+        if (err) return cb(err);
 
         var titles = results.titles;
         _.each(titles, function(item, index) {
@@ -45,6 +43,7 @@ class BmiPlugin {
           item.artist = writers.length > 0 ? writers[0].name : '';
           item.workId = 'BMI #' + item.workId;
         });
+
         return cb(null, titles);
       });
     }
@@ -59,10 +58,9 @@ class BmiPlugin {
     } else if (artistCache[entity.link]) {
       return cb(null, getTopMedia(artistCache[entity.link], {}));
     } else {
-      var searchUrl = `${BASE_URI}artist-single?url=${encodeURIComponent(entity.link)}`;
-      return request.get(searchUrl, function(err, res) {
+      return bmi.artistSingle(entity.link, (err, results) => {
         if (err) return cb(err);
-        let results = res.body;
+
         var artist = results.singleArtist;
         artistCache[entity.link] = artist;
         return cb(null, getTopMedia(artist, {}));

@@ -25,7 +25,14 @@
   "license": "MIT",
   "dependencies": {
     "debug": "^2.2.0",
+    "jsdom": "^9.4.2",
     "lodash": "^4.15.0",
+    "string-capitalize-name": "^1.0.3",
     "superagent": "^2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2",
+    "should": "^11.1.0",
+    "sinon": "^1.17.5"
   }
 }
